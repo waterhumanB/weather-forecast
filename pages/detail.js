@@ -3,7 +3,6 @@ import { Button } from "../components/common/button.js";
 import { Card } from "../components/weather/card.js";
 import { Info } from "../components/weather/info.js";
 import { getForecastByCity } from "../service/api.js";
-import { currentTime } from "../utils/date.js";
 import { router } from "../router.js";
 
 export class Detail extends Component {

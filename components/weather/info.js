@@ -11,8 +11,8 @@ export class Info {
     return `
       <div id="info">
           <div>
-            <img url=${this.iconUrl}></img>
-            <div>
+            <img src=${this.iconUrl} alt="${this.description}"></img>
+            <div id="temp">
               <div>
                 <p>현재</p>
                 <p>${this.temp}</p>
