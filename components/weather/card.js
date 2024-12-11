@@ -1,4 +1,4 @@
-import Component from "./component";
+import { Component } from "../common/component.js";
 
 export class Card extends Component {
   constructor(title, date, children = []) {

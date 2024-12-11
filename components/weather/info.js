@@ -1,6 +1,6 @@
-export class info {
-  constructor(imgUrl, temp, temp_min, temp_max, description) {
-    this.imgUrl = imgUrl;
+export class Info {
+  constructor(iconUrl, temp, temp_min, temp_max, description) {
+    this.iconUrl = iconUrl;
     this.temp = temp;
     this.temp_min = temp_min;
     this.temp_max = temp_max;
@@ -11,7 +11,7 @@ export class info {
     return `
       <div id="info">
           <div>
-            <img url=${this.imgUrl}></img>
+            <img url=${this.iconUrl}></img>
             <div>
               <div>
                 <p>현재</p>

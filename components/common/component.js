@@ -6,4 +6,12 @@ export class Component {
   render() {
     return "";
   }
+
+  attachEvent() {
+    this.children.forEach((child) => {
+      if (child.attachEvent) {
+        child.attachEvent();
+      }
+    });
+  }
 }

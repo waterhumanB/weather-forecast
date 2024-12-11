@@ -1,8 +1,9 @@
-import Component from "./component";
+import { Component } from "./component.js";
 
 export class Button extends Component {
-  constructor(text, onClick, children = []) {
+  constructor(id, text, onClick, children = []) {
     super(children);
+    this.id = id;
     this.text = text;
     this.onClick = onClick;
   }
@@ -10,10 +11,18 @@ export class Button extends Component {
   render() {
     const childrenHTML = this.children.map((child) => child.render()).join("");
     return `
-      <button onclick="${this.onClick}">
+      <button id="${this.id}" onclick="${this.onClick}">
         ${this.text}
         ${childrenHTML}
       </button>
     `;
+  }
+
+  attachEvent() {
+    const button = document.getElementById(this.id);
+    if (button && typeof this.onClick === "function") {
+      button.addEventListener("click", this.onClick);
+    }
+    super.attachEvent();
   }
 }

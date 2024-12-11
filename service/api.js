@@ -1,23 +1,46 @@
-import { config } from "dotenv";
+const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
-config();
+// 현재 날씨 정보 가져오기
+export async function getCurrentWeather(city = "Seoul") {
+  const weatherApi = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric&lang=kr`;
 
-const city = "Seoul";
-const weatherApi = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.WHEATER_API_KEY}&units=metric&lang=kr`;
-
-const api = async () => {
   try {
     const response = await fetch(weatherApi);
+
+    if (!response.ok) {
+      throw new Error("현재 날씨 API 호출 실패");
+    }
+
     const data = await response.json();
     const iconCode = data.weather[0].icon;
     const iconUrl = `http://openweathermap.org/img/wn/${iconCode}.png`;
 
-    console.log(new Date());
-    console.log("현재", data.main.temp);
-    console.log("최저", data.main.temp_min);
-    console.log("최고", data.main.temp_max);
-    console.log("공기", data.weather[0].description);
+    return {
+      ...data,
+      iconUrl,
+    };
   } catch (error) {
-    console.error("Error fetching weather data:", error);
+    console.error("현재 날씨 정보를 가져오는 중 오류 발생:", error);
+    return null;
   }
-};
+}
+
+// 예보 정보 가져오기 (도시 이름 기반)
+export async function getForecastByCity(city = "Seoul") {
+  const forecastApi = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric&lang=kr`;
+
+  try {
+    const response = await fetch(forecastApi);
+
+    if (!response.ok) {
+      throw new Error("예보 API 호출 실패");
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error("예보 정보를 가져오는 중 오류 발생:", error);
+    return null;
+  }
+}
