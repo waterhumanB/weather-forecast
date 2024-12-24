@@ -1,10 +1,11 @@
 import { Component } from "../common/component.js";
 
 export class Card extends Component {
-  constructor(title, date, children = []) {
-    super(children);
-    this.title = title;
-    this.date = date;
+  constructor(props = {}) {
+    super(props);
+    this.id = props.id;
+    this.text = props.text;
+    this.onClick = props.onClick;
   }
 
   render() {

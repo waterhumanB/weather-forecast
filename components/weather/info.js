@@ -1,10 +1,10 @@
 export class Info {
-  constructor(iconUrl, temp, temp_min, temp_max, description) {
-    this.iconUrl = iconUrl;
-    this.temp = temp;
-    this.temp_min = temp_min;
-    this.temp_max = temp_max;
-    this.description = description;
+  constructor(props = {}) {
+    this.iconUrl = props.iconUrl;
+    this.temp = props.temp;
+    this.temp_min = props.temp_min;
+    this.temp_max = props.temp_max;
+    this.description = props.description;
   }
 
   render() {
