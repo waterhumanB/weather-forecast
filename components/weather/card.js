@@ -8,7 +8,7 @@ export class Card extends Component {
     this.onClick = props.onClick;
   }
 
-  render() {
+  template() {
     const childrenHTML = this.children.map((child) => child.render()).join("");
     return `
       <div id="card">
