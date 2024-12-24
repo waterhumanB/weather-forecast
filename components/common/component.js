@@ -1,22 +1,4 @@
 export class Component {
-  constructor(children = []) {
-    this.children = children;
-  }
-
-  render() {
-    return "";
-  }
-
-  attachEvent() {
-    this.children.forEach((child) => {
-      if (child.attachEvent) {
-        child.attachEvent();
-      }
-    });
-  }
-}
-
-export class Component {
   constructor(props = {}) {
     this.props = props;
     this.state = props.initialState || null;
@@ -55,7 +37,7 @@ export class Component {
     root.innerHTML = this.template();
   }
 
-  // 이벤트 설정 메서드 (각 컴포넌트에서 오버라이드)
+  // 이벤트 설정 메서드
   attachEvents() {
     // 각 컴포넌트에서 구현
   }
