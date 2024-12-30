@@ -11,7 +11,7 @@ export function navigate(path) {
   const Page = routes[path] || Home;
   const pageInstance = new Page();
   root.innerHTML = pageInstance.render();
-  pageInstance.attachEvent();
+  pageInstance.attachEvents();
 }
 
 export function router(path) {

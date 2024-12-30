@@ -1,7 +1,7 @@
 export class Component {
   constructor(props = {}) {
     this.props = props;
-    this.state = props.initialState || null;
+    this.state = props.initialState || {};
     this.children = props.children || [];
     this.init();
   }
@@ -9,8 +9,8 @@ export class Component {
   // 초기화 메서드: 마운트 단계
   init() {
     this.render();
-    this.attachEvents();
     this.renderChildren();
+    this.attachEvents();
   }
 
   // 상태를 업데이트하고 렌더링을 다시 호출하는 메서드
@@ -22,11 +22,11 @@ export class Component {
   // 상태가 변경되었을 때 호출되는 메서드
   update() {
     this.render();
-    this.attachEvents();
     this.renderChildren();
+    this.attachEvents();
   }
 
-  // 렌더링할 템플릿을 정의하는 메서드 (추상 메서드)
+  // 렌더링할 템플릿을 정의하는 메서드
   template() {
     return "";
   }
@@ -39,7 +39,11 @@ export class Component {
 
   // 이벤트 설정 메서드
   attachEvents() {
-    // 각 컴포넌트에서 구현
+    this.children.forEach((child) => {
+      if (child.attachEvents) {
+        child.attachEvents();
+      }
+    });
   }
 
   // 자식 컴포넌트를 렌더링하는 메서드

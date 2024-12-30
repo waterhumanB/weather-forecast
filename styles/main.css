@@ -9,6 +9,8 @@
 }
 
 #Seoul {
+  width: auto;
+  height: auto;
   background: none;
   border: none;
   cursor: pointer;

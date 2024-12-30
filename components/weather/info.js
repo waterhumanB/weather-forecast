@@ -1,13 +1,20 @@
-import { Component } from "./Component.js";
+import { Component } from "../common/component";
 
 export class Info extends Component {
   constructor(props = {}) {
+    const {
+      iconUrl = "",
+      temp = "",
+      temp_min = "",
+      temp_max = "",
+      description = "",
+    } = props;
     super(props);
-    this.iconUrl = props.iconUrl || "";
-    this.temp = props.temp || "";
-    this.temp_min = props.temp_min || "";
-    this.temp_max = props.temp_max || "";
-    this.description = props.description || "";
+    this.iconUrl = iconUrl;
+    this.temp = temp;
+    this.temp_min = temp_min;
+    this.temp_max = temp_max;
+    this.description = description;
   }
 
   template() {
@@ -18,7 +25,7 @@ export class Info extends Component {
           <div id="temp">
             <div>
               <p>현재</p>
-              <p>${this.temp}</p>
+              <p>${this.temp}°C</p>
             </div>
             <div>
               <p>최저/최고</p>

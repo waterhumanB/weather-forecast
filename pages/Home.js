@@ -3,63 +3,70 @@ import { Button } from "../components/common/button.js";
 import { Card } from "../components/weather/card.js";
 import { Info } from "../components/weather/info.js";
 import { getCurrentWeather } from "../service/api.js";
-import { currentTime } from "../utils/date.js";
+// import { currentTime } from "../utils/date.js";
 import { router } from "../router.js";
 
 export class Home extends Component {
-  constructor() {
-    super();
-    this.data = null;
+  constructor(props = {}) {
+    super({
+      ...props,
+      initialState: { data: null },
+    });
+    this.currentTime = new Date().toLocaleString(); // 현재 시간
+    this.info = null;
+    this.card = null;
+    this.button = null;
     this.loadData();
   }
 
-  setState(newState) {
-    this.data = newState;
-    this.update();
-  }
-
+  // 비동기 데이터 로딩
   async loadData() {
     try {
       const weatherData = await getCurrentWeather();
-      this.setState(weatherData);
+      this.setState({ data: weatherData });
     } catch (error) {
       console.error("Error loading weather data:", error);
+      this.setState({ data: null }); // 에러 시 데이터 초기화 또는 에러 상태 설정
     }
   }
 
-  update() {
-    const root = document.getElementById("root");
-    root.innerHTML = this.render();
-    this.attachEvent();
-  }
-
-  render() {
-    if (!this.data) {
+  // 템플릿 정의
+  template() {
+    if (!this.state.data) {
       return `<p>Loading...</p>`;
     }
 
-    const info = new Info(
-      this.data.iconUrl,
-      this.data.main.temp,
-      this.data.main.temp_min,
-      this.data.main.temp_max,
-      this.data.weather[0].description
-    );
-    const card = new Card(this.data.name, currentTime, [info]);
+    this.info = new Info({
+      iconUrl: `https://openweathermap.org/img/wn/${this.state.data?.weather[0]?.icon}@2x.png`,
+      temp: this.state.data?.main.temp,
+      temp_min: this.state.data?.main.temp_min,
+      temp_max: this.state.data?.main.temp_max,
+      description: this.state.data?.weather[0].description,
+      children: [],
+    });
 
-    this.button = new Button(this.data.name, "", () => router("/detail"), [
-      card,
-    ]);
+    this.card = new Card({
+      title: this.state.data?.name,
+      date: this.currentTime,
+      children: [this.info],
+    });
+
+    this.button = new Button({
+      id: "Seoul",
+      onClick: () => router("/detail"),
+      children: [this.card],
+    });
 
     return `
       <h1>홈 페이지</h1>
-      ${this.button.render()}
+      ${this.button.template()}
     `;
   }
 
-  attachEvent() {
+  // 이벤트 설정 = 실행안됨
+  attachEvents() {
     if (this.button) {
-      this.button.attachEvent();
+      this.button.attachEvents();
     }
   }
 }
