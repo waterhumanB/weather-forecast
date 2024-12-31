@@ -6,71 +6,71 @@ import { getForecastByCity } from "../service/api.js";
 import { router } from "../router.js";
 
 export class Detail extends Component {
-  constructor() {
-    super();
-    this.data = null;
+  constructor(props = {}) {
+    super({
+      ...props,
+      initialState: { data: null },
+    });
+    this.info = null;
+    this.card = null;
+    this.button = null;
     this.loadData();
-  }
-
-  setState(newState) {
-    this.data = newState;
-    this.update();
   }
 
   async loadData() {
     try {
       const forecastData = await getForecastByCity();
-      this.setState(forecastData);
+      this.setState({ data: forecastData });
     } catch (error) {
       console.error("Error loading weather data:", error);
+      this.setState({ data: null });
     }
   }
 
-  update() {
-    const root = document.getElementById("root");
-    root.innerHTML = this.render();
-
-    if (this.button) {
-      this.button.attachEvent();
-    }
-  }
-
-  render() {
-    if (!this.data) {
+  template() {
+    if (!this.state.data) {
       return `<p>Loading...</p>`;
     }
 
-    const forestCardList = this.data.list
+    const forestCardList = this.state.data?.list
       .map((item) => {
         const iconCode = item.weather[0].icon;
         const iconUrl = `http://openweathermap.org/img/wn/${iconCode}.png`;
 
-        const info = new Info(
+        this.info = new Info({
           iconUrl,
-          item.main.temp,
-          item.main.temp_min,
-          item.main.temp_max,
-          item.weather[0].description
-        );
+          temp: item.main.temp,
+          temp_min: item.main.temp_min,
+          temp_max: item.main.temp_max,
+          description: item.weather[0].description,
+        });
 
-        const card = new Card(this.data.city.name, item.dt_txt, [info]);
+        this.card = new Card({
+          title: this.state.data?.city.name,
+          date: item.dt_txt,
+          children: [this.info],
+        });
 
-        return card.render();
+        return this.card.template();
       })
       .join("");
 
-    this.button = new Button("goHome", "홈으로", () => router("/"), []);
+    this.button = new Button({
+      id: "goHome",
+      text: "홈으로",
+      onClick: () => router("/weather-forecast"),
+    });
 
     return `
-      <h1>${this.data.city.name}</h1>
-      ${this.button.render()}
+      <h1>${this.state.data.city.name}</h1>
+      ${this.button.template()}
       ${forestCardList}
     `;
   }
 
-  attachEvent() {
+  attachEvents() {
     if (this.button) {
-      this.button.attachEvent();
+      this.button.attachEvents();
     }
   }
 }
