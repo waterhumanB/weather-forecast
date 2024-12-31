@@ -3,7 +3,7 @@ import { Button } from "../components/common/button.js";
 import { Card } from "../components/weather/card.js";
 import { Info } from "../components/weather/info.js";
 import { getCurrentWeather } from "../service/api.js";
-// import { currentTime } from "../utils/date.js";
+import { convertUnixToKST } from "../utils/date.js";
 import { router } from "../router.js";
 
 export class Home extends Component {
@@ -12,26 +12,24 @@ export class Home extends Component {
       ...props,
       initialState: { data: null },
     });
-    this.currentTime = new Date().toLocaleString(); // 현재 시간
     this.info = null;
     this.card = null;
     this.button = null;
     this.loadData();
   }
 
-  // 비동기 데이터 로딩
   async loadData() {
     try {
       const weatherData = await getCurrentWeather();
       this.setState({ data: weatherData });
     } catch (error) {
       console.error("Error loading weather data:", error);
-      this.setState({ data: null }); // 에러 시 데이터 초기화 또는 에러 상태 설정
+      this.setState({ data: null });
     }
   }
 
-  // 템플릿 정의
   template() {
+    console.log(this.state.data);
     if (!this.state.data) {
       return `<p>Loading...</p>`;
     }
@@ -47,7 +45,7 @@ export class Home extends Component {
 
     this.card = new Card({
       title: this.state.data?.name,
-      date: this.currentTime,
+      date: convertUnixToKST(this.state.data?.dt),
       children: [this.info],
     });
 
@@ -63,7 +61,6 @@ export class Home extends Component {
     `;
   }
 
-  // 이벤트 설정 = 실행안됨
   attachEvents() {
     if (this.button) {
       this.button.attachEvents();

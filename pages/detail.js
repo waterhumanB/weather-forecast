@@ -28,6 +28,7 @@ export class Detail extends Component {
   }
 
   template() {
+    console.log(this.state.data);
     if (!this.state.data) {
       return `<p>Loading...</p>`;
     }

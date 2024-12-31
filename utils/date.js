@@ -1,16 +1,24 @@
-const now = new Date();
+export const convertUnixToKST = (unixTimestamp) => {
+  const date = new Date(unixTimestamp * 1000);
 
-const formatter = new Intl.DateTimeFormat("ko-KR", {
-  year: "numeric",
-  month: "2-digit",
-  day: "2-digit",
-  hour: "2-digit",
-  minute: "2-digit",
-});
+  const options = {
+    timeZone: "Asia/Seoul",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  };
 
-const formattedDateTime = formatter.format(now);
+  const formatter = new Intl.DateTimeFormat("ko-KR", options);
+  const formattedDate = formatter.formatToParts(date);
 
-const parts = formattedDateTime.replace(/\s/g, "").split(/[\.,:]/);
-const [year, month, day, hour, minute] = parts;
+  const result = {};
+  formattedDate.forEach((part) => {
+    if (part.type !== "literal") {
+      result[part.type] = part.value;
+    }
+  });
 
-export const currentTime = `${year}년 ${month}월 ${day}일 ${hour}시 ${minute}분`;
+  return `${result.year}년 ${result.month}월 ${result.day}일 ${result.hour}시 ${result.minute}분`;
+};

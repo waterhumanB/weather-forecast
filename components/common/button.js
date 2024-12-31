@@ -10,7 +10,6 @@ export class Button extends Component {
     this.children = children;
   }
 
-  // 템플릿 정의
   template() {
     const childrenHTML = this.children
       .map((child) => child.template())
